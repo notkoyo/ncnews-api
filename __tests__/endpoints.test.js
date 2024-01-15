@@ -74,11 +74,11 @@ describe("GET /api/articles", () => {
             "author",
             "title",
             "article_id",
-            "body",
             "topic",
             "created_at",
             "votes",
             "article_img_url",
+            "comment_count",
           ].forEach((property) => 
           expect(article.hasOwnProperty(property)).toBe(true));
         });
@@ -114,6 +114,11 @@ describe("GET /api/articles/:article_id", () => {
           expect(article.hasOwnProperty(property)).toBe(true)
         );
       });
+  });
+  it('should return status code 400 if passed an invalid id', () => {
+    return request(app)
+      .get('/api/articles/banana')
+      .expect(400);
   });
   it('should return status code 404 if no article with specified id exists', () => {
     return request(app)
