@@ -19,6 +19,25 @@ afterAll(() => {
   return db.end();
 });
 
+describe("GET /api", () => {
+  it("should return json object with all available endpoints with description, queries, format and example response properties", async () => {
+    const fileData = await fs.readFile("./api/endpoints.json");
+    const parsedData = JSON.parse(fileData);
+    const { body } = await request(app).get("/api");
+    const { endpoints } = body;
+    expect(parsedData).toEqual(endpoints);
+  });
+  it("should return 404 error if no endpoints are available", () => {
+    return request(app)
+      .get("/api")
+      .then(({ error, status, body }) => {
+        if (error && Object.keys(body).length === 0) {
+          expect(status).toBe(404);
+        }
+      });
+  });
+});
+
 describe("GET /api/topics", () => {
   it("should return status code 200 and all topics data in an array of objects with slug and description properties", () => {
     return request(app)
@@ -43,19 +62,33 @@ describe("GET /api/topics", () => {
   });
 });
 
-describe("GET /api", () => {
-  it("should return json object with all available endpoints with description, queries, format and example response properties", async () => {
-    const fileData = await fs.readFile("./api/endpoints.json");
-    const parsedData = JSON.parse(fileData);
-    const { body } = await request(app).get("/api");
-    const { endpoints } = body;
-    expect(parsedData).toEqual(endpoints);
-  });
-  it("should return 404 error if no endpoints are available", () => {
+describe("GET /api/articles", () => {
+  it("should return status code 200 and all articles data in an array of objects that contains author, title, article_id, body, topic, created_at, votes, article_img_url properties", () => {
     return request(app)
-      .get("/api")
+      .get("/api/articles")
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).toBeGreaterThan(0);
+        articles.forEach((article) => {
+          [
+            "author",
+            "title",
+            "article_id",
+            "body",
+            "topic",
+            "created_at",
+            "votes",
+            "article_img_url",
+          ].forEach((property) => 
+          expect(article.hasOwnProperty(property)).toBe(true));
+        });
+      });
+  });
+  it("should return 404 error if articles are not found", () => {
+    return request(app)
+      .get("/api/articles")
       .then(({ error, status, body }) => {
-        if (error && Object.keys(body).length === 0) {
+        if (error && body.topics.length === 0) {
           expect(status).toBe(404);
         }
       });
