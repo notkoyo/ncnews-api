@@ -8,5 +8,80 @@
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
+  },
+  "GET /api/articles": {
+    "description": "returns an array of all articles",
+    "queries": [],
+    "exampleResponse": {
+      "articles": [{
+        "author": "John Doe",
+        "title": "The Importance of Object Properties",
+        "article_id": 12345,
+        "topic": "Technology",
+        "created_at": "24-12-2024",
+        "votes": 5,
+        "article_img_url": "https://example.com/article-image.jpg",
+        "comment_count": 10
+      },
+      {
+        "author": "John Doe",
+        "title": "The Importance of Object Properties",
+        "article_id": 12345,
+        "topic": "Technology",
+        "created_at": "24-12-2024",
+        "votes": 5,
+        "article_img_url": "https://example.com/article-image.jpg",
+        "comment_count": 10
+      }
+      ]
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "returns an article object with specified ID",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "author": "John Doe",
+        "title": "The Importance of Object Properties",
+        "article_id": 12345,
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit....",
+        "topic": "Technology",
+        "created_at": "24-12-2024",
+        "votes": 5,
+        "article_img_url": "https://example.com/article-image.jpg"
+      }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "returns an arryay of comments from specified article ID",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 1,
+          "votes": 999,
+          "created_at": "24-12-2024",
+          "author": "User1",
+          "body": "This is a great article!",
+          "article_id": 101
+        },
+        {
+          "comment_id": 2,
+          "votes": 999,
+          "created_at": "24-12-2024",
+          "author": "User2",
+          "body": "Interesting insights!",
+          "article_id": 102
+        },
+        {
+          "comment_id": 3,
+          "votes": 999,
+          "created_at": "24-12-2024",
+          "author": "User3",
+          "body": "I have a different perspective.",
+          "article_id": 103
+        }
+      ]
+    }
   }
 }

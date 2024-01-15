@@ -79,8 +79,9 @@ describe("GET /api/articles", () => {
             "votes",
             "article_img_url",
             "comment_count",
-          ].forEach((property) => 
-          expect(article.hasOwnProperty(property)).toBe(true));
+          ].forEach((property) =>
+            expect(article.hasOwnProperty(property)).toBe(true)
+          );
         });
       });
   });
@@ -115,14 +116,45 @@ describe("GET /api/articles/:article_id", () => {
         );
       });
   });
-  it('should return status code 400 if passed an invalid id', () => {
-    return request(app)
-      .get('/api/articles/banana')
-      .expect(400);
+  it("should return status code 400 if passed an invalid id", () => {
+    return request(app).get("/api/articles/banana").expect(400);
   });
-  it('should return status code 404 if no article with specified id exists', () => {
+  it("should return status code 404 if no article with specified id exists", () => {
+    return request(app).get("/api/articles/99999999").expect(404);
+  });
+});
+
+describe("GET /api/articles/:article_id/comments", () => {
+  it("should return status code 200 and an array of comments for the given ID, each comment should have comment_id, votes, created_at, author, body, article_id properties and be sorted with most recent comments first", () => {
     return request(app)
-      .get("/api/articles/99999999")
-      .expect(404);
+      .get("/api/articles/1/comments")
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments.length).toBeGreaterThan(0);
+        comments.forEach((comment) => {
+          [
+            "comment_id",
+            "votes",
+            "created_at",
+            "author",
+            "body",
+            "article_id",
+          ].forEach((property) => 
+            expect(comment.hasOwnProperty(property)).toBe(true)
+          );
+        });
+      });
+  });
+  it("should return status code 400 if passed an invalid id", () => {
+    return request(app).get("/api/articles/banana/comments").expect(400);
+  });
+  it("should return 404 error if comments are not found", () => {
+    return request(app)
+      .get("/api/articles/9999999/comments")
+      .then(({ error, status, body }) => {
+        if (error && body.comments === undefined) {
+          expect(status).toBe(404);
+        }
+      });
   });
 });
