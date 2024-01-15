@@ -1,14 +1,18 @@
-const express = require('express');
-const prepAllTopics = require('./controllers/prepAllTopics');
-const prepAllEndpoints = require('./controllers/prepAllEndpoints');
-const prepArticlesById = require('./controllers/prepArticlesById');
-const prepAllArticles = require('./controllers/prepAllArticles');
+const express = require("express");
+const {
+  prepAllArticles,
+  prepAllCommentsById,
+  prepAllEndpoints,
+  prepAllTopics,
+  prepArticlesById,
+} = require("./controllers/controllers");
 const app = express();
 
-app.get('/api/topics', prepAllTopics);
-app.get('/api', prepAllEndpoints);
-app.get('/api/articles/:article_id', prepArticlesById);
-app.get('/api/articles', prepAllArticles);
+app.get("/api/topics", prepAllTopics);
+app.get("/api", prepAllEndpoints);
+app.get("/api/articles/:article_id", prepArticlesById);
+app.get("/api/articles", prepAllArticles);
+app.get("/api/articles/:article_id/comments", prepAllCommentsById);
 
 app.use((err, req, res, next) => {
   if (err.message && err.status) {
