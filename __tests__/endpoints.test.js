@@ -224,3 +224,12 @@ describe('PATCH /api/articles/:article_id', () => {
       .expect(404);
   });
 });
+
+describe('DELETE /api/comments/:comment_id', () => {
+  it('should return 204 status code and no content', () => {
+    return request(app).delete("/api/comments/1").expect(204)
+  });
+  it('should return 404 status code if no comment with ID is found', () => {
+    return request(app).delete("/api/comments/999999").expect(404)
+  });
+});

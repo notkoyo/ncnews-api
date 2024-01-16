@@ -114,5 +114,10 @@
         "comment_count": 10
       }
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes a comment from database",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
