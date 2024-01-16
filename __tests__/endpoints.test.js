@@ -37,6 +37,28 @@ describe("GET /api", () => {
   });
 });
 
+describe("GET /api/users", () => {
+  it("should return status code 200 and an array of objects with username, name and avatar_url properties", () => {
+    return request(app)
+      .get("/api/users")
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users.length).toBeGreaterThan(0);
+        users.forEach((user) => {
+          ["username", "name", "avatar_url"].forEach((property) =>
+            expect(user.hasOwnProperty(property))
+          );
+        });
+      });
+  });
+  it("should return status code 404 if no users on database", () => {
+    return request(app).get("/api/users").then(({ body} ) => {
+      const { users } = body;
+      if (users.length === 0) expect(404);
+    });
+  });
+});
+
 describe("GET /api/topics", () => {
   it("should return status code 200 and all topics data in an array of objects with slug and description properties", () => {
     return request(app)
@@ -179,7 +201,10 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
   it("should return status code 400 if passed an invalid id", () => {
-    return request(app).post("/api/articles/banana/comments").send({ username: "butter_bridge", body: "this is a nice comment" }).expect(400);
+    return request(app)
+      .post("/api/articles/banana/comments")
+      .send({ username: "butter_bridge", body: "this is a nice comment" })
+      .expect(400);
   });
   it("should return status code 400 if passed no data", () => {
     return request(app).post("/api/articles/1/comments").send({}).expect(400);
@@ -192,10 +217,10 @@ describe("POST /api/articles/:article_id/comments", () => {
   });
 });
 
-describe('PATCH /api/articles/:article_id', () => {
-  it('should return status code 200 and updated article object with new vote count', () => {
+describe("PATCH /api/articles/:article_id", () => {
+  it("should return status code 200 and updated article object with new vote count", () => {
     return request(app)
-      .patch('/api/articles/1')
+      .patch("/api/articles/1")
       .send({ inc_votes: 69 })
       .then(({ body }) => {
         const { article } = body;
@@ -207,12 +232,15 @@ describe('PATCH /api/articles/:article_id', () => {
           "created_at",
           "votes",
           "article_img_url",
-          "comment_count"
-      ].forEach((property) => expect(article.hasOwnProperty(property)));
-      })
+          "comment_count",
+        ].forEach((property) => expect(article.hasOwnProperty(property)));
+      });
   });
   it("should return status code 400 if passed an invalid id", () => {
-    return request(app).patch("/api/articles/banana").send({ inc_votes: 69 }).expect(400);
+    return request(app)
+      .patch("/api/articles/banana")
+      .send({ inc_votes: 69 })
+      .expect(400);
   });
   it("should return status code 400 if no votes passed in", () => {
     return request(app).patch("/api/articles/1").send({}).expect(400);
@@ -225,11 +253,11 @@ describe('PATCH /api/articles/:article_id', () => {
   });
 });
 
-describe('DELETE /api/comments/:comment_id', () => {
-  it('should return 204 status code and no content', () => {
-    return request(app).delete("/api/comments/1").expect(204)
+describe("DELETE /api/comments/:comment_id", () => {
+  it("should return 204 status code and no content", () => {
+    return request(app).delete("/api/comments/1").expect(204);
   });
-  it('should return 404 status code if no comment with ID is found', () => {
-    return request(app).delete("/api/comments/999999").expect(404)
+  it("should return 404 status code if no comment with ID is found", () => {
+    return request(app).delete("/api/comments/999999").expect(404);
   });
 });

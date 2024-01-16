@@ -8,6 +8,7 @@ const {
   prepNewComment,
   prepUpdateVotes,
   prepDeleteComment,
+  prepAllUsers,
 } = require("./controllers/controllers");
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/api", prepAllEndpoints);
 app.get("/api/articles/:article_id", prepArticlesById);
 app.get("/api/articles", prepAllArticles);
 app.get("/api/articles/:article_id/comments", prepAllCommentsById);
+app.get("/api/users", prepAllUsers);
 
 app.post("/api/articles/:article_id/comments", prepNewComment);
 
