@@ -108,6 +108,27 @@ describe("GET /api/articles", () => {
         });
       });
   });
+  it('should return status code 200 and an array of articles with queried topic', () => {
+    return request(app)
+      .get("/api/articles?topic=mitch")
+      .then(({ body }) => {
+        const { articles } = body;
+        articles.forEach((article) => {
+          [
+            "author",
+            "title",
+            "article_id",
+            "topic",
+            "created_at",
+            "votes",
+            "article_img_url",
+            "comment_count",
+          ].forEach((property) =>
+            expect(article.hasOwnProperty(property)).toBe(true)
+          );
+        });
+      });
+  })
   it("should return 404 error if articles are not found", () => {
     return request(app)
       .get("/api/articles")
