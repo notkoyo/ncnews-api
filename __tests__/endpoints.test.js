@@ -139,7 +139,7 @@ describe("GET /api/articles/:article_id/comments", () => {
             "author",
             "body",
             "article_id",
-          ].forEach((property) => 
+          ].forEach((property) =>
             expect(comment.hasOwnProperty(property)).toBe(true)
           );
         });
@@ -156,5 +156,36 @@ describe("GET /api/articles/:article_id/comments", () => {
           expect(status).toBe(404);
         }
       });
+  });
+});
+
+describe("POST /api/articles/:article_id/comments", () => {
+  it("should post comment to PSQL database and return a comment object with properties added by database", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ username: "butter_bridge", body: "this is a nice comment" })
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        [
+          "comment_id",
+          "body",
+          "article_id",
+          "author",
+          "votes",
+          "created_at",
+        ].forEach((property) =>
+          expect(comment.hasOwnProperty(property)).toBe(true)
+        );
+      });
+  });
+  it("should return status code 400 if passed an invalid id", () => {
+    return request(app).post("/api/articles/banana/comments").expect(400);
+  });
+  it("should return status code 404 if user does not exist", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ username: "notkoyo", body: "lol" })
+      .expect(404);
   });
 });
