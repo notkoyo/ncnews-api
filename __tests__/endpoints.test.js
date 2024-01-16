@@ -155,6 +155,7 @@ describe("GET /api/articles/:article_id", () => {
           "created_at",
           "votes",
           "article_img_url",
+          "comment_count",
         ].forEach((property) =>
           expect(article.hasOwnProperty(property)).toBe(true)
         );
