@@ -52,10 +52,12 @@ describe("GET /api/users", () => {
       });
   });
   it("should return status code 404 if no users on database", () => {
-    return request(app).get("/api/users").then(({ body} ) => {
-      const { users } = body;
-      if (users.length === 0) expect(404);
-    });
+    return request(app)
+      .get("/api/users")
+      .then(({ body }) => {
+        const { users } = body;
+        if (users.length === 0) expect(404);
+      });
   });
 });
 
@@ -224,16 +226,17 @@ describe("PATCH /api/articles/:article_id", () => {
       .send({ inc_votes: 69 })
       .then(({ body }) => {
         const { article } = body;
-        [
-          "author",
-          "title",
-          "article_id",
-          "topic",
-          "created_at",
-          "votes",
-          "article_img_url",
-          "comment_count",
-        ].forEach((property) => expect(article.hasOwnProperty(property)));
+        expect({
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: "2020-07-09T20:11:00.000Z",
+          votes: 169,
+          article_img_url:
+            "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        }).toMatchObject(article);
       });
   });
   it("should return status code 400 if passed an invalid id", () => {
@@ -243,13 +246,18 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(400);
   });
   it("should return status code 400 if no votes passed in", () => {
-    return request(app).patch("/api/articles/1").send({}).expect(400);
+    return request(app).patch("/api/articles/1").send({}).expect(400).then(({ error }) => {
+      expect(error.text).toBe('Bad Request');
+    });
   });
   it("should return status code 404 if article is not found", () => {
     return request(app)
       .patch("/api/articles/99999")
       .send({ inc_votes: 69 })
-      .expect(404);
+      .expect(404)
+      .then(({ error }) => {
+        expect(error.text).toBe('Article not found')
+      });
   });
 });
 
