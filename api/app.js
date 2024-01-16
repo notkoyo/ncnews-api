@@ -6,6 +6,7 @@ const {
   prepAllTopics,
   prepArticlesById,
   prepNewComment,
+  prepUpdateVotes,
 } = require("./controllers/controllers");
 const app = express();
 
@@ -18,6 +19,8 @@ app.get("/api/articles", prepAllArticles);
 app.get("/api/articles/:article_id/comments", prepAllCommentsById);
 
 app.post("/api/articles/:article_id/comments", prepNewComment);
+
+app.patch("/api/articles/:article_id", prepUpdateVotes);
 
 app.use((err, req, res, next) => {
   if (err.message && err.status) {

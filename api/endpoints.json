@@ -98,5 +98,21 @@
         "article_id": 101
       }
     }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "returns an article object from request body with updated votes",
+    "queries": [],
+    "exampleResponse": {
+      "articles": {
+        "author": "John Doe",
+        "title": "The Importance of Object Properties",
+        "article_id": 12345,
+        "topic": "Technology",
+        "created_at": "24-12-2024",
+        "votes": -100,
+        "article_img_url": "https://example.com/article-image.jpg",
+        "comment_count": 10
+      }
+    }
   }
 }
