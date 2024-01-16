@@ -246,9 +246,13 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(400);
   });
   it("should return status code 400 if no votes passed in", () => {
-    return request(app).patch("/api/articles/1").send({}).expect(400).then(({ error }) => {
-      expect(error.text).toBe('Bad Request');
-    });
+    return request(app)
+      .patch("/api/articles/1")
+      .send({})
+      .expect(400)
+      .then(({ error }) => {
+        expect(error.text).toBe("Bad Request");
+      });
   });
   it("should return status code 404 if article is not found", () => {
     return request(app)
@@ -256,16 +260,33 @@ describe("PATCH /api/articles/:article_id", () => {
       .send({ inc_votes: 69 })
       .expect(404)
       .then(({ error }) => {
-        expect(error.text).toBe('Article not found')
+        expect(error.text).toBe("Article not found");
       });
   });
 });
 
 describe("DELETE /api/comments/:comment_id", () => {
   it("should return 204 status code and no content", () => {
-    return request(app).delete("/api/comments/1").expect(204);
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+  });
+  it("should return 400 status code if ID is invalid", () => {
+    return request(app)
+      .delete("/api/comments/banana")
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Bad Request");
+      });
   });
   it("should return 404 status code if no comment with ID is found", () => {
-    return request(app).delete("/api/comments/999999").expect(404);
+    return request(app)
+      .delete("/api/comments/999999")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("ID Not Found");
+      });
   });
 });
