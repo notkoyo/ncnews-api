@@ -9,7 +9,6 @@ const {
 } = require("../db/data/test-data/index");
 const db = require("../db/connection");
 const fs = require("fs/promises");
-const { CLIENT_RENEG_LIMIT } = require("tls");
 
 beforeEach(() => {
   return seed({ topicData, userData, articleData, commentData });
@@ -180,12 +179,48 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
   it("should return status code 400 if passed an invalid id", () => {
-    return request(app).post("/api/articles/banana/comments").expect(400);
+    return request(app).post("/api/articles/banana/comments").send({ username: "butter_bridge", body: "this is a nice comment" }).expect(400);
   });
-  it("should return status code 404 if user does not exist", () => {
+  it("should return status code 400 if passed no data", () => {
+    return request(app).post("/api/articles/1/comments").send({}).expect(400);
+  });
+  it("should return status code 404 if article is not found", () => {
     return request(app)
-      .post("/api/articles/1/comments")
-      .send({ username: "notkoyo", body: "lol" })
+      .post("/api/articles/99999/comments")
+      .send({ username: "butter_bridge", body: "this is a nice comment" })
+      .expect(404);
+  });
+});
+
+describe('PATCH /api/articles/:article_id', () => {
+  it('should return status code 200 and updated article object with new vote count', () => {
+    return request(app)
+      .patch('/api/articles/1')
+      .send({ inc_votes: 69 })
+      .then(({ body }) => {
+        const { article } = body;
+        [
+          "author",
+          "title",
+          "article_id",
+          "topic",
+          "created_at",
+          "votes",
+          "article_img_url",
+          "comment_count"
+      ].forEach((property) => expect(article.hasOwnProperty(property)));
+      })
+  });
+  it("should return status code 400 if passed an invalid id", () => {
+    return request(app).patch("/api/articles/banana").send({ inc_votes: 69 }).expect(400);
+  });
+  it("should return status code 400 if no votes passed in", () => {
+    return request(app).patch("/api/articles/1").send({}).expect(400);
+  });
+  it("should return status code 404 if article is not found", () => {
+    return request(app)
+      .patch("/api/articles/99999")
+      .send({ inc_votes: 69 })
       .expect(404);
   });
 });
