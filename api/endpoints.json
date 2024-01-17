@@ -10,7 +10,7 @@
     }
   },
   "GET /api/articles": {
-    "description": "returns an array of all articles with optional topic query",
+    "description": "returns an array of all articles",
     "queries": [],
     "exampleResponse": {
       "articles": [
@@ -49,8 +49,7 @@
         "topic": "Technology",
         "created_at": "24-12-2024",
         "votes": 5,
-        "article_img_url": "https://example.com/article-image.jpg",
-        "comment_count": 12
+        "article_img_url": "https://example.com/article-image.jpg"
       }
     }
   },
