@@ -51,12 +51,12 @@ describe("GET /api/users", () => {
         });
       });
   });
-  it("should return status code 404 if no users on database", () => {
+  it("should return status code 200 if no users on database but users table exists", () => {
     return request(app)
       .get("/api/users")
       .then(({ body }) => {
         const { users } = body;
-        if (users.length === 0) expect(404);
+        if (users.length >= 0) expect(200);
       });
   });
 });

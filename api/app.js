@@ -27,6 +27,10 @@ app.patch("/api/articles/:article_id", prepUpdateVotes);
 
 app.delete("/api/comments/:comment_id", prepDeleteComment);
 
+app.all('*', (req, res) => {
+  res.status(404).send({ msg: 'not found'})
+})
+
 app.use((err, req, res, next) => {
   if (err.message && err.status) {
     res.status(err.status).send({ msg: err.message });
