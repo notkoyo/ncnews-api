@@ -72,5 +72,5 @@ PGDATABASE = nc_news_test
 
 ### Minimum Requirements
 
-Node.js: **20.10.0**
+Node.js: **20.10.0**\
 PostgreSQL: **16.1**
