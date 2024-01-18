@@ -34,6 +34,7 @@ Make sure you have the following software installed:
    ```
 
 ### Database Seeding
+
 To create and seed the local database with initial data, run the following commands:
 
    ```bash
@@ -42,11 +43,30 @@ To create and seed the local database with initial data, run the following comma
    ```
 
 ### Running Tests
+
 To execute tests, use the following command:
 
 ```bash
 npm test endpoint
 ```
 
-Create files: .env.test containing PGDATABASE=nc_news_test && .env.development containing PGDATABASE=nc_news
-in order to succesfully connect locally to the databases used in this project.
+### Environment Variables
+
+Create two separate .env files for different environments, as described below:
+
+**.env.development**:
+
+This file is used for the development environment and should include the following variable:
+
+```
+PGDATABASE = nc_news
+```
+
+**.env.test**:
+
+This file is used for the development environment and should include the following variable:
+
+```
+PGDATABASE = nc_news_test
+```
+
