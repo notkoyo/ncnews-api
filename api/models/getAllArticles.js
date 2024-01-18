@@ -16,17 +16,12 @@ const getAllArticles = async (topic = 0) => {
   LEFT JOIN
     comments ON articles.article_id = comments.article_id
 `;
-  if (topic !== 0) {
-    query += `
-    WHERE articles.topic = $1
+  topic ? ((query += ` WHERE articles.topic = $1`), args.push(topic)) : false;
+
+  query += `
     GROUP BY articles.article_id
     ORDER BY articles.created_at DESC`;
-    args.push(topic);
-  } else {
-    query += `
-    GROUP BY articles.article_id
-    ORDER BY articles.created_at DESC`;
-  }
+
   const { rows } = await db.query(query, args);
   return rows;
 };

@@ -123,8 +123,10 @@ describe("GET /api/articles", () => {
             "votes",
             "article_img_url",
             "comment_count",
-          ].forEach((property) =>
+          ].forEach((property) => {
             expect(article.hasOwnProperty(property)).toBe(true)
+            expect(article.topic).toEqual('mitch')
+          }
           );
         });
       });
