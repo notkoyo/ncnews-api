@@ -33,5 +33,20 @@ Make sure you have the following software installed:
    npm install
    ```
 
+### Database Seeding
+To create and seed the local database with initial data, run the following commands:
+
+   ```bash
+   npm run setup-dbs
+   npm run seed
+   ```
+
+### Running Tests
+To execute tests, use the following command:
+
+```bash
+npm test endpoint
+```
+
 Create files: .env.test containing PGDATABASE=nc_news_test && .env.development containing PGDATABASE=nc_news
 in order to succesfully connect locally to the databases used in this project.
