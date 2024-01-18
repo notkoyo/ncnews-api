@@ -54,7 +54,7 @@ npm test endpoint
 
 Create two separate .env files for different environments, as described below:
 
-**.env.development**:
+***.env.development***:
 
 This file is used for the development environment and should include the following variable:
 
@@ -62,7 +62,7 @@ This file is used for the development environment and should include the followi
 PGDATABASE = nc_news
 ```
 
-**.env.test**:
+***.env.test***:
 
 This file is used for the development environment and should include the following variable:
 
@@ -70,3 +70,7 @@ This file is used for the development environment and should include the followi
 PGDATABASE = nc_news_test
 ```
 
+### Minimum Requirements
+
+Node.js: **20.10.0**
+PostgreSQL: **16.1**
