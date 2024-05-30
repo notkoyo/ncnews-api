@@ -10,8 +10,8 @@ const {
   prepUpdateVotes,
   prepDeleteComment,
   prepAllUsers,
+  sendRiotCode
 } = require("./controllers/controllers");
-const { sendRiotCode } = require("./controllers/riotCode");
 const app = express();
 
 app.use(cors());
