@@ -7,5 +7,6 @@ const { prepDeleteComment } = require("./prepDeleteComment");
 const prepNewComment = require("./prepNewComment");
 const prepUpdateVotes = require("./prepVoteUpdates");
 const prepAllUsers = require("./prepAllUsers");
+const sendRiotCode = require("./riotCode");
 
-module.exports = { prepAllArticles, prepAllCommentsById, prepAllEndpoints, prepAllTopics, prepArticlesById, prepNewComment, prepUpdateVotes, prepDeleteComment, prepAllUsers };
+module.exports = { prepAllArticles, prepAllCommentsById, prepAllEndpoints, prepAllTopics, prepArticlesById, prepNewComment, prepUpdateVotes, prepDeleteComment, prepAllUsers, sendRiotCode };
